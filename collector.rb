@@ -85,10 +85,12 @@ keys_object = rest_get(keys_url, auth, cert=nil)
 # Create array to hold symmetrix IDS and another to hold their last available date
 symIds = []
 lastAvail = []
+firstAvail = []
 
 keys_object['arrayInfo'].each do |arrayObj|
     symIds << arrayObj['symmetrixId']
     lastAvail << arrayObj['lastAvailableDate']
+    firstAvail << arrayObj['firstAvailableDate']
 end
 
 
@@ -104,7 +106,7 @@ index = 0
 #change
 
 symIds.each do |sym|
-    postObject = {'startDate' => lastAvail[index], 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
+    postObject = {'startDate' => lastAvail[index], 'endDate' => firstAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
