@@ -13,90 +13,6 @@ require "influxdb"
 current_dir=File.dirname(__FILE__)
 new_curr_dir = Dir.pwd
 settings_file=("#{new_curr_dir}/settings.json.example")
-####################################################################################
-# Method: Read's the Unisphere XSD file and gets all Metrics for the specified scope
-####################################################################################
-def get_metrics(param_type,xsd)
-  output = Array.new
-  JSON.parse(xsd)['xs:schema']['xs:simpleType'].each do |type|
-    if type['name'] == "#{param_type}Metric"
-      type['xs:restriction']['xs:enumeration'].each do |metric|
-        output.push(metric['value']) if metric['value'] == metric['value'].upcase
-      end
-    end
-  end
-  return output
-end
-
-#####################################
-# Method: Reutrns keys for all scopes
-#####################################
-def get_keys(unisphere,payload,monitor,auth)
-  if monitor['scope'].downcase == "array"
-    rest = rest_get("https://#{unisphere['ip']}:#{unisphere['port']}/univmax/restapi/performance/#{monitor['scope']}/keys", auth)
-  else
-    rest = rest_post(payload.to_json,"https://#{unisphere['ip']}:#{unisphere['port']}/univmax/restapi/performance/#{monitor['scope']}/keys", auth)
-  end
-  
-  componentId = get_component_id_payload(monitor['scope'])
-  output = rest["#{componentId}Info"] if unisphere['version'] == 8
-  output = rest["#{componentId}KeyResult"]["#{componentId}Info"] if unisphere['version'] == 7
-  puts output
-  return output
-end
-
-##################################################
-# Method: Find differences in the key payload
-##################################################
-def diff_key_payload(incoming_payload,parent_id=nil)
-  baseline_keys=["firstAvailableDate","lastAvailableDate"]
-  #baseline_keys.push(parent_id) if parent_id
-  incoming_keys=incoming_payload.keys
-  return incoming_keys-baseline_keys
-end
-
-##################################################
-# Method: Build the Key Payload
-##################################################
-def build_key_payload(unisphere,symmetrix,monitor,key=nil,parent_id=nil)
-  payload = { "symmetrixId" => symmetrix['sid']}
-  extra_payload = {parent_id[0] => key[parent_id[0]]} if parent_id
-  payload.merge!(extra_payload) if parent_id
-  componentId = get_component_id_key(monitor['scope']) if unisphere['version'] == 7
-  payload = {  "#{componentId}KeyParam" => payload } if unisphere['version'] == 7
-  return payload
-end
-
-##################################################
-# Method: Build the Metric Payload
-##################################################
-def build_metric_payload(unisphere,monitor,symmetrix,metrics,key=nil,parent_id=nil,child_key=nil,child_id=nil)
-  payload = { "symmetrixId" => symmetrix['sid'], "metrics" => metrics}
-  parent_payload = { parent_id[0] => key[parent_id[0]] } unless monitor['scope'] == "Array"
-  payload.merge!(parent_payload) unless monitor['scope'] == "Array"
-  child_payload = { child_id[0] => child_key[child_id[0]], "startDate" => child_key['lastAvailableDate'], "endDate" => child_key['lastAvailableDate'] } if child_key
-  payload.merge!(child_payload) if child_key
-  timestamp_payload = { "startDate" => key['lastAvailableDate'], "endDate" => key['lastAvailableDate'] } unless child_key
-  payload.merge!(timestamp_payload) unless child_key
-  uni8_payload = { "dataFormat" => "Average" } if unisphere['version'] == 8
-  payload.merge!(uni8_payload) if unisphere['version'] == 8
-  componentId = get_component_id_key(monitor['scope']) if (unisphere['version'] == 7 && child_key.nil?)
-  componentId = get_component_id_key(monitor['children'][0]['scope']) if (unisphere['version'] == 7 && child_key != nil)
-  payload = {  "#{componentId}Param" => payload } if unisphere['version'] == 7
-  return payload
-end
-
-################################################################################
-# Method: Returns Metrics for all component scopes. Helper for building payloads
-################################################################################
-def get_perf_metrics(unisphere,payload,monitor,auth)
-  binding.pry
-  rest = rest_post(payload.to_json,"https://#{unisphere['ip']}:#{unisphere['port']}/univmax/restapi/performance/#{monitor['scope']}/metrics", auth)
-  output = rest['resultList']['result'][0] if unisphere['version'] == 8
-  output = rest['iterator']['resultList']['result'][0] if unisphere['version'] == 7
-  puts output
-  return output
-end
 
 #########################
 # Method: API Post Method
@@ -113,46 +29,6 @@ def rest_post(payload, api_url, auth, cert=nil)
       accept: :json
     }
   ))
-end
-
-##################################################################################
-# Method: Helper Method to correctly format scope for JSON payloads in Unisphere 7
-##################################################################################
-def get_component_id_key(scope)
-  ## Splits the string based on upper case letters ##
-  s = scope.split /(?=[A-Z])/
-  i = 0
-  while i < s.length
-    ## If the string in the array is all upcase, make it downcase ##
-    s[i] = s[i].downcase if s[i] == s[i].upcase
-    ## If this is the first string in the array and it is camelcase, make it all downcase ##
-    s[i] = s[i].downcase if i == 0 && s[i] == s[i].capitalize
-    i += 1
-  end
-  new_scope = s.join
-  return new_scope
-end
-
-##################################################################################
-# Method: Helper Method to correctly format scope for JSON return in Unisphere 7
-##################################################################################
-def get_component_id_payload(scope)
-  ## Splits the string based on upper case letters ##
-  s = scope.split /(?=[A-Z])/
-  i = 0
-  if s[-1].capitalize == "Pool"
-    new_scope = "pool"
-  else
-    while i < s.length
-      ## If the string in the array is all upcase, make it downcase ##
-      s[i] = s[i].downcase if s[i] == s[i].upcase
-      ## If this is the first string in the array and it is camelcase, make it all downcase ##
-      s[i] = s[i].downcase if i == 0 && s[i] == s[i].capitalize
-      i += 1
-    end
-    new_scope = s.join
-  end
-  return new_scope
 end
 
 ########################
