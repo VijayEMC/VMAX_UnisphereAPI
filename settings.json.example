@@ -1,0 +1,35 @@
+{
+	
+	"influx": {
+		"enabled": true,
+		"prefix": false,
+		"host": "localhost",
+		"port": "8086",
+        "table": "MYDB"
+	},
+
+	"unisphere": 
+		{
+
+			"ip": "10.185.55.156",
+			"user": "rubytest",
+			"password": "EMCruby1!",
+			"port": "8443",
+			"version": 8,
+			"symmetrix": [
+				{ "sid": "000196701905" },
+				{ "sid": "000196701909" },
+				{ "sid": "000197800720"}
+			]
+		}
+	,
+    
+    "metrics" : [
+        "MB_READ_PER_SEC",
+        "MB_WRITE_PER_SEC",
+        "IO_RATE",
+        "HA_MB_PER_SEC",
+        "READ_HIT_PER_SEC",
+        "WRITE_HIT_PER_SEC"
+        ]
+    }

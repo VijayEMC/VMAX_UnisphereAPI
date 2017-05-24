@@ -1,0 +1,56 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (5.0.0)
+      columnize (= 0.9.0)
+    cause (0.1)
+    coderay (1.1.1)
+    columnize (0.9.0)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
+    domain_name (0.5.20170404)
+      unf (>= 0.0.5, < 1.0.0)
+    ffi (1.9.18-x64-mingw32)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    influxdb (0.3.14)
+      cause
+      json
+    json (1.8.6)
+    method_source (0.8.2)
+    mime-types (2.99.3)
+    netrc (0.11.0)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.2.0)
+      byebug (~> 5.0)
+      pry (~> 0.10)
+    rest-client (1.8.0-x64-mingw32)
+      ffi (~> 1.9)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
+    rubysl-ostruct (2.1.0)
+    safe_yaml (1.0.4)
+    simple-graphite (2.1.0)
+    slop (3.6.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.4-x64-mingw32)
+
+PLATFORMS
+  x64-mingw32
+
+DEPENDENCIES
+  crack (~> 0.4.2)
+  influxdb (~> 0.3.14)
+  json (~> 1.8.3)
+  pry-byebug (~> 3.2.0)
+  rest-client (~> 1.8.0)
+  rubysl-ostruct (~> 2.1.0)
+  simple-graphite (~> 2.1.0)
+
+BUNDLED WITH
+   1.14.6
