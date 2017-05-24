@@ -69,7 +69,9 @@ metrics_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port'
 auth = Base64.strict_encode64("#{config['unisphere']['user']}:#{config['unisphere']['password']}")
 
 # Make call to get keys
+
 keys_object = rest_get(keys_url, auth, cert=nil)
+puts keys_object
 
 #################################################
 # Build POST Request Body Object from Keys Return
