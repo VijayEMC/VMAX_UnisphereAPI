@@ -95,6 +95,7 @@ influxArray = []
 
 #Start a loop that makes requests and dumps requested info into influx
 index = 0
+#change
 
 symIds.each do |sym|
     postObject.startDate = lastAvail[index]
