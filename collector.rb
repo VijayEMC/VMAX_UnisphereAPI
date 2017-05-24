@@ -13,6 +13,15 @@ current_dir=File.dirname(__FILE__)
 new_curr_dir = Dir.pwd
 settings_file=("#{new_curr_dir}/settings.json.example")
 
+class PostObject
+  def initialize
+    yield self if block_given?
+  end
+
+  attr_accessor :startDate, :endDate, :symmetrixId, :dataFormat, :metrics
+end
+
+
 #########################
 # Method: API Post Method
 #########################
@@ -99,12 +108,14 @@ index = 0
 #change
 
 symIds.each do |sym|
-    #postObject.startDate = lastAvail[index]
-    #postObject.endDate = lastAvail[index]
-    #postObject.symmetrixId = sym
-    #postObject.dataFormat = "Average"
-    #postObject.metrics = config['metrics']
-    postObject = {startDate => lastAvail[index], endDate => lastAvail[index], symmetrixId => sym, dataFormat => "Average", metrics => config['metrics'] }
+    postObject = PostObject.new do |obj|
+        obj.startDate = lastAvail[index]
+        obj.endDate = lastAvail[index]
+        obj.symmetrixId = sym
+        obj.dataFormat = "Average"
+        obj.metrics = config['metrics']
+    end
+    
     binding.pry
     # Make POST Request
     metrics_object = rest_post(postObject, metrics_url, auth, cert=nil)
