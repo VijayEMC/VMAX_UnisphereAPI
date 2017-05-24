@@ -88,7 +88,7 @@ end
 
 
 # create new object for post request payload
-postObject = OpenStruct.new
+postObject = {startDate : "", endDate : "", symmetrixId : "", dataFormat : "", metrics : "" }
 # create new object for influx payload
 influxPayload = OpenStruct.new
 # create array to send multiple metrics
