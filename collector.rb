@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 #require "devkit"
 require "rest-client"
-require "csv"
+#require "csv"
 require "json"
 require "base64"
-require "crack"
+#require "crack"
 require "pry-byebug"
 require "ostruct"
 require "influxdb"
@@ -54,7 +54,7 @@ end
 
 config=readSettings(settings_file)
 # Create influx instance and connect to InfluxDB
-influxdb = InfluxDB::Client.new config['influx']['table'], host: config['influx']['host'], port: config['influx']['port'] if config['influx']['enabled']
+influxdb = InfluxDB::Client.new config['influx']['table'], host: config['influx']['host'], port: config['influx']['port']
 
 
 #####################################################
