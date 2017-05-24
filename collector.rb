@@ -71,7 +71,7 @@ auth = Base64.strict_encode64("#{config['unisphere']['user']}:#{config['unispher
 # Make call to get keys
 
 keys_object = rest_get(keys_url, auth, cert=nil)
-puts keys_object
+binding.pry
 
 #################################################
 # Build POST Request Body Object from Keys Return
