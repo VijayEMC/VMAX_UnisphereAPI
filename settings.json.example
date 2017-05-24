@@ -11,15 +11,15 @@
 	"unisphere": 
 		{
 
-			"ip": "10.185.55.156",
-			"user": "rubytest",
-			"password": "EMCruby1!",
+			"ip": "<IP>",
+			"user": "<username>",
+			"password": "<password>!",
 			"port": "8443",
 			"version": 8,
 			"symmetrix": [
-				{ "sid": "000196701905" },
-				{ "sid": "000196701909" },
-				{ "sid": "000197800720"}
+				{ "sid": "<symID>" },
+				{ "sid": "<symID>" },
+				{ "sid": "<symID>"}
 			]
 		}
 	,

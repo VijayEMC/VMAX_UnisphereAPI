@@ -7,7 +7,6 @@ require "base64"
 require "crack"
 require "pry-byebug"
 require "ostruct"
-%w{simple-graphite}.each { |l| require l }
 require "influxdb"
 
 current_dir=File.dirname(__FILE__)
