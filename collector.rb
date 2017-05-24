@@ -71,7 +71,7 @@ auth = Base64.strict_encode64("#{config['unisphere']['user']}:#{config['unispher
 # Make call to get keys
 
 keys_object = rest_get(keys_url, auth, cert=nil)
-binding.pry
+
 
 #################################################
 # Build POST Request Body Object from Keys Return
@@ -81,7 +81,7 @@ binding.pry
 symIds = []
 lastAvail = []
 
-keys_object.arrayInfo.each do |arrayObj|
+keys_object['arrayInfo'].each do |arrayObj|
     symIds << arrayObj.symmetrixId
     lastAvail << arrayObj.lastAvailableDate
 end
