@@ -105,10 +105,10 @@ index = 0
 
 symIds.each do |sym|
     postObject = {'startDate' => lastAvail[index], 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
-    
+    jsonPayload = postObject.to_json
     binding.pry
     # Make POST Request
-    metrics_object = rest_post(postObject, metrics_url, auth, cert=nil)
+    metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
     ####################################################
     # Organized returned object into influxDB payload
     #####################################################
