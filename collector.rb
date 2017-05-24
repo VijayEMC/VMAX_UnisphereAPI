@@ -88,7 +88,7 @@ end
 
 
 # create new object for post request payload
-postObject = {startDate => nil, endDate => nil, symmetrixId => nil, dataFormat => nil, metrics => nil }
+#postObject = {startDate => nil, endDate => nil, symmetrixId => nil, dataFormat => nil, metrics => nil }
 # create new object for influx payload
 influxPayload = OpenStruct.new
 # create array to send multiple metrics
@@ -99,11 +99,12 @@ index = 0
 #change
 
 symIds.each do |sym|
-    postObject.startDate = lastAvail[index]
-    postObject.endDate = lastAvail[index]
-    postObject.symmetrixId = sym
-    postObject.dataFormat = "Average"
-    postObject.metrics = config['metrics']
+    #postObject.startDate = lastAvail[index]
+    #postObject.endDate = lastAvail[index]
+    #postObject.symmetrixId = sym
+    #postObject.dataFormat = "Average"
+    #postObject.metrics = config['metrics']
+    postObject = {startDate => lastAvail[index], endDate => lastAvail[index], symmetrixId => sym, dataFormat => "Average", metrics => config['metrics'] }
     binding.pry
     # Make POST Request
     metrics_object = rest_post(postObject, metrics_url, auth, cert=nil)
