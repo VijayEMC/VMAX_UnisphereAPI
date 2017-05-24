@@ -82,8 +82,9 @@ symIds = []
 lastAvail = []
 
 keys_object['arrayInfo'].each do |arrayObj|
-    symIds << arrayObj.symmetrixId
-    lastAvail << arrayObj.lastAvailableDate
+    binding.pry
+    symIds << arrayObj['symmetrixId']
+    lastAvail << arrayObj['lastAvailableDate']
 end
 
 
