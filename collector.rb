@@ -104,6 +104,7 @@ symIds.each do |sym|
     postObject.symmetrixId = sym
     postObject.dataFormat = "Average"
     postObject.metrics = config['metrics']
+    binding.pry
     # Make POST Request
     metrics_object = rest_post(postObject, metrics_url, auth, cert=nil)
     ####################################################
