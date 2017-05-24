@@ -13,15 +13,11 @@ current_dir=File.dirname(__FILE__)
 new_curr_dir = Dir.pwd
 settings_file=("#{new_curr_dir}/settings.json.example")
 
-class PostObject
-  def initialize
-    yield self if block_given?
-  end
-
-  attr_accessor :startDate, :endDate, :symmetrixId, :dataFormat, :metrics
-end
 
 
+testobj = {'startdate' => 'hi'}
+
+puts testobj
 #########################
 # Method: API Post Method
 #########################
@@ -108,13 +104,7 @@ index = 0
 #change
 
 symIds.each do |sym|
-    postObject = PostObject.new do |obj|
-        obj.startDate = lastAvail[index]
-        obj.endDate = lastAvail[index]
-        obj.symmetrixId = sym
-        obj.dataFormat = "Average"
-        obj.metrics = config['metrics']
-    end
+    postObject = {'startDate' => lastAvail[index], 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
     
     binding.pry
     # Make POST Request
