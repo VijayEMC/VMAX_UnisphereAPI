@@ -116,7 +116,7 @@ symIds.each do |sym|
         # get actual value
         newValue = metricList[0][metric]
         # create influx payload
-        influxPayload = {series => metric, values => {value => newValue}, tags => {symmetrixId => sym}}
+        influxPayload = {series : metric, values : {value : newValue}, tags : {symmetrixId : sym}}
         #influxPayload.values = {value => newValue}
         #influxPayload.tags = {symmetrixId => sym}
         #influxPayload.series = metric
