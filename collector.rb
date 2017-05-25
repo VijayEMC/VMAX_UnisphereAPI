@@ -22,7 +22,7 @@ puts testobj
 # Method: API Post Method
 #########################
 def rest_post(payload, api_url, auth, cert=nil)
-  JSON.parse(RestClient::Request.execute(
+  returnObj = RestClient::Request.execute(
     method: :post,
     url: api_url,
     verify_ssl: false,
@@ -32,7 +32,8 @@ def rest_post(payload, api_url, auth, cert=nil)
       content_type: 'application/json',
       accept: :json
     }
-  ))
+  )
+    puts returnObj
 end
 
 ########################
@@ -67,7 +68,7 @@ influxdb = InfluxDB::Client.new config['influx']['table'], host: config['influx'
 ######################################################
 
 # Build our url strings
-keys_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port']}/univmax/restapi/performance/Array/keys"
+keys_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port']}/performance/Array/keys"
 metrics_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port']}/univmax/restapi/performance/Array/metrics" 
 
 # Create base 64 encoded auth
@@ -106,7 +107,7 @@ index = 0
 #change
 
 symIds.each do |sym|
-    postObject = {'startDate' => lastAvail[index], 'endDate' => firstAvail[index], 'symmetrixId' => '000196701909', 'dataFormat' => 'Average', 'metrics' => config['metrics']}
+    postObject = {'startDate' => lastAvail[index], 'endDate' => firstAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
