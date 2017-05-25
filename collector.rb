@@ -13,11 +13,6 @@ current_dir=File.dirname(__FILE__)
 new_curr_dir = Dir.pwd
 settings_file=("#{new_curr_dir}/settings.json.example")
 
-
-
-testobj = {'startdate' => 'hi'}
-
-puts testobj
 #########################
 # Method: API Post Method
 #########################
@@ -110,9 +105,8 @@ symIds.each do |sym|
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
-    jsonReturn = metrics_object.to_json
-    resultList = jsonReturn['resultList']
-    resultArray = resultList['result']
+    metricList = metrics_object['resultList']['result']
+
     binding.pry
     ####################################################
     # Organized returned object into influxDB payload
