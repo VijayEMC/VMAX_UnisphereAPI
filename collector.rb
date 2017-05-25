@@ -66,9 +66,7 @@ metrics_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port'
 auth = Base64.strict_encode64("#{config['unisphere']['user']}:#{config['unisphere']['password']}")
 
 # Make call to get keys
-
 keys_object = rest_get(keys_url, auth, cert=nil)
-puts keys_object
 
 #################################################
 # Build POST Request Body Object from Keys Return
@@ -85,13 +83,14 @@ keys_object['arrayInfo'].each do |arrayObj|
     firstAvail << arrayObj['firstAvailableDate']
 end
 
-# create array to send multiple metrics
+# create array to send multiple metrics to influx
 influxArray = []
 
 #Start a loop that makes requests and dumps requested info into influx
 index = 0
 symIds.each do |sym|
     postObject = {'startDate' => lastAvail[index], 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
+    # convert object to JSON
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
