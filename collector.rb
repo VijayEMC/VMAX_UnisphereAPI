@@ -67,7 +67,7 @@ influxdb = InfluxDB::Client.new config['influx']['table'], host: config['influx'
 ######################################################
 
 # Build our url strings
-keys_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port']}/performance/Array/keys"
+keys_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port']}/univmax/restapi/performance/Array/keys"
 metrics_url = "https://#{config['unisphere']['ip']}:#{config['unisphere']['port']}/univmax/restapi/performance/Array/metrics" 
 
 # Create base 64 encoded auth
