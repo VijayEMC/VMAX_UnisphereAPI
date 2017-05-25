@@ -114,7 +114,7 @@ symIds.each do |sym|
     # collect the data from each metric returned from API
     config['metrics'].each do |metric|
         # get actual value
-        newValue = metricsList[metric]
+        newValue = metricList[metric]
         # create influx payload
         influxPayload = {'series' => metric, 'values' => {'value' => newValue}, 'tags' => {'symmetrixId' => sym}}
         #influxPayload.values = {value => newValue}
