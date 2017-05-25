@@ -110,6 +110,7 @@ symIds.each do |sym|
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
+    jsonReturn = metrics_object.to_json
     binding.pry
     ####################################################
     # Organized returned object into influxDB payload
