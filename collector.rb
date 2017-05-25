@@ -1,10 +1,7 @@
 #!/usr/bin/env ruby
-#require "devkit"
 require "rest-client"
-#require "csv"
 require "json"
 require "base64"
-#require "crack"
 require "pry-byebug"
 require "ostruct"
 require "influxdb"
@@ -88,26 +85,19 @@ keys_object['arrayInfo'].each do |arrayObj|
     firstAvail << arrayObj['firstAvailableDate']
 end
 
-
-# create new object for post request payload
-#postObject = {startDate => nil, endDate => nil, symmetrixId => nil, dataFormat => nil, metrics => nil }
-# create new object for influx payload
-#influxPayload = OpenStruct.new
 # create array to send multiple metrics
 influxArray = []
 
 #Start a loop that makes requests and dumps requested info into influx
 index = 0
-#change
-
 symIds.each do |sym|
     postObject = {'startDate' => lastAvail[index], 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
+    #grab relevant data from http response
     metricList = metrics_object['resultList']['result']
 
-    #binding.pry
     ####################################################
     # Organized returned object into influxDB payload
     #####################################################
@@ -117,14 +107,10 @@ symIds.each do |sym|
         newValue = metricList[0][metric]
         # create influx payload
         influxPayload = {series: metric, values: {value: newValue}, tags: {symmetrixId: sym}}
-        #influxPayload.values = {value => newValue}
-        #influxPayload.tags = {symmetrixId => sym}
-        #influxPayload.series = metric
         # push the current metric to the array
         influxArray.push(influxPayload)
     end
     # send array of data points to influx
-    jsonArray = influxArray.to_json
     influxdb.write_points(influxArray)
     # clear array
     influxArray.clear
