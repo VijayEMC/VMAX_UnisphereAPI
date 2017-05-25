@@ -92,7 +92,7 @@ end
 # create new object for post request payload
 #postObject = {startDate => nil, endDate => nil, symmetrixId => nil, dataFormat => nil, metrics => nil }
 # create new object for influx payload
-influxPayload = OpenStruct.new
+#influxPayload = OpenStruct.new
 # create array to send multiple metrics
 influxArray = []
 
@@ -107,18 +107,19 @@ symIds.each do |sym|
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
     metricList = metrics_object['resultList']['result']
 
-    binding.pry
+    #binding.pry
     ####################################################
     # Organized returned object into influxDB payload
     #####################################################
     # collect the data from each metric returned from API
     config['metrics'].each do |metric|
         # get actual value
-        newValue = metrics_object.metric
+        newValue = metricsList[metric]
         # create influx payload
-        influxPayload.values = {value => newValue}
-        influxPayload.tags = {symmetrixId => sym}
-        influxPayload.series = metric
+        influxPayload = {'series' => metric, 'values' => {'value' => newValue}, 'tags' => {'symmetrixId' => sym}}
+        #influxPayload.values = {value => newValue}
+        #influxPayload.tags = {symmetrixId => sym}
+        #influxPayload.series = metric
         # push the current metric to the array
         influxArray.push(influxPayload)
     end
