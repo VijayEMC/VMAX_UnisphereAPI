@@ -22,7 +22,7 @@ puts testobj
 # Method: API Post Method
 #########################
 def rest_post(payload, api_url, auth, cert=nil)
-  JSON.parse(RestClient::Request.execute(
+  postResposne = RestClient::Request.execute(
     method: :post,
     url: api_url,
     verify_ssl: false,
@@ -32,7 +32,8 @@ def rest_post(payload, api_url, auth, cert=nil)
       content_type: 'application/json',
       accept: :json
     }
-  ))
+  )
+    puts postResponse
 end
 
 ########################
