@@ -106,7 +106,7 @@ index = 0
 #change
 
 symIds.each do |sym|
-    postObject = {'startDate' => firstAvail[index], 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
+    postObject = {'startDate' => lastAvail[index] - 300000, 'endDate' => lastAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
