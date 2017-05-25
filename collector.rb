@@ -107,7 +107,7 @@ symIds.each do |sym|
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
     metricList = metrics_object['resultList']['result']
 
-    binding.pry
+    #binding.pry
     ####################################################
     # Organized returned object into influxDB payload
     #####################################################
