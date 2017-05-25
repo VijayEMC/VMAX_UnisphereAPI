@@ -22,7 +22,7 @@ puts testobj
 # Method: API Post Method
 #########################
 def rest_post(payload, api_url, auth, cert=nil)
-  postResponse = RestClient::Request.execute(
+  JSON.Parse(RestClient::Request.execute(
     method: :post,
     url: api_url,
     verify_ssl: false,
@@ -32,8 +32,7 @@ def rest_post(payload, api_url, auth, cert=nil)
       content_type: 'application/json',
       accept: :json
     }
-  )
-    puts postResponse
+  ))
 end
 
 ########################
@@ -107,7 +106,7 @@ index = 0
 #change
 
 symIds.each do |sym|
-    postObject = {'startDate' => lastAvail[index], 'endDate' => firstAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => config['metrics']}
+    postObject = {'startDate' => lastAvail[index], 'endDate' => firstAvail[index], 'symmetrixId' => sym, 'dataFormat' => 'Average', 'metrics' => "HostIOs"}
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
