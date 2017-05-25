@@ -125,7 +125,7 @@ symIds.each do |sym|
     end
     # send array of data points to influx
     jsonArray = influxArray.to_json
-    influxdb.write_points(jsonArray)
+    influxdb.write_points(influxArray)
     # clear array
     influxArray.clear
     # increment and loop
