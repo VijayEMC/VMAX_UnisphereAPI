@@ -3,7 +3,6 @@ require "rest-client"
 require "json"
 require "base64"
 require "pry-byebug"
-require "ostruct"
 require "influxdb"
 
 current_dir=File.dirname(__FILE__)
@@ -94,6 +93,28 @@ symIds.each do |sym|
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
+    
+    ###################################################################
+    # BEGIN ERROR CHECKING HERE
+    #####################################################################
+    # create array of sym IDS that did not generate metrics
+    noMetrics = []
+    yesMetrics = []
+    if metrics_object['resultList']['result'] == nil
+        noMetrics << sym 
+    else
+        yesMetrics << sym
+    end
+        
+        
+    
+    # move to next sym if sym ID generated no metrics
+    next if metrics_object['resultList']['result'] == nil
+    
+    #####################################################################
+    # END ERROR CHECKING
+    ####################################################################
+    
     #grab relevant data from http response
     metricList = metrics_object['resultList']['result']
 
@@ -115,4 +136,15 @@ symIds.each do |sym|
     influxArray.clear
     # increment and loop
     index += 1
+end
+
+# Print results of symmetrix metrics
+# NOTE: ADD ACTUAL METRICS TO RUBY PRINTOUT
+if noMetrics.length >0
+    puts "The following Symmetrix produced NO metrics: "
+    puts noMetrics
+end
+if yesMetrics.length >0
+    puts "The following Symmetrix produced metrics "
+    puts yesMetrics  
 end
