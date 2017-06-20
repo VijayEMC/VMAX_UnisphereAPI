@@ -50,7 +50,7 @@ end
 
 config=readSettings(settings_file)
 # Create influx instance and connect to InfluxDB
-influxdb = InfluxDB::Client.new config['influx']['table'], host: config['influx']['host'], port: config['influx']['port']
+influxdb = InfluxDB::Client.new config['influx']['table'], host: config['influx']['host'], port: config['influx']['port'], username: config['influx']['username'], password: config['influx']['password']
 
 
 #####################################################
