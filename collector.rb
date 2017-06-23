@@ -30,14 +30,18 @@ end
 # Method: API GET Method
 ########################
 def rest_get(api_url, auth, cert=nil)
-  JSON.parse(RestClient::Request.execute(method: :get,
+  response = RestClient::Request.execute(method: :get,
     url: api_url,
     verify_ssl: false,
     headers: {
       authorization: auth,
       accept: :json
     }
-  ))
+  )
+  if response.code == 200
+      return JSON.parse(response)
+  else
+      abort("GET request received a #{response.code} error code. Application has not received Symmetrix Keys to obtain metrics. Please see rest_get method in ruby source. Sorry.")
 end
 
 #################################
@@ -67,6 +71,10 @@ auth = Base64.strict_encode64("#{config['unisphere']['user']}:#{config['unispher
 # Make call to get keys
 keys_object = rest_get(keys_url, auth, cert=nil)
 
+###################################################
+# NOTE: ADD ERROR CHECKING HERE. ENSURE KEYS_OBJECT
+# IS A VALID RETURN
+####################################################
 #################################################
 # Build POST Request Body Object from Keys Return
 ##################################################
@@ -93,10 +101,19 @@ symIds.each do |sym|
     jsonPayload = postObject.to_json
     # Make POST Request
     metrics_object = rest_post(jsonPayload, metrics_url, auth, cert=nil)
+    #######################################################
+    # NOTE: ADD ERROR CHECKING HERE. ENSURE METRICS_OBJECT
+    # IS A VALID RETURN
+    #######################################################
     
     ###################################################################
     # BEGIN ERROR CHECKING HERE
     #####################################################################
+    # NOTES: WE NEED TO ANALYZE THE JSON UNISPHERE RETURNS IF/WHEN THE METRICS 
+    # ARE INACCESSIBLE. ONCE WE CAN SEE THE JSON FROM AN EMPTY METRIC OR
+    # DEPRECATED METRIC WE CAN ADD THE PROPER ERROR CHECKING FOR RETURN THAT
+    # HAS NO METRICS
+    ##########################################################################
     # create array of sym IDS that did not generate metrics
     noMetrics = []
     yesMetrics = []
