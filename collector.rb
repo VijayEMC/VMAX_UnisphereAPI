@@ -42,6 +42,8 @@ def rest_get(api_url, auth, cert=nil)
       return JSON.parse(response)
   else
       abort("GET request received a #{response.code} error code. Application has not received Symmetrix Keys to obtain metrics. Please see rest_get method in ruby source. Sorry.")
+  end
+    
 end
 
 #################################
