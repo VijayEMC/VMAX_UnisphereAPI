@@ -3,9 +3,11 @@
 	"influx": {
 		"enabled": true,
 		"prefix": false,
-		"host": "localhost",
+        "user" : "",
+        "pass" : "",
+		"ip": "localhost",
 		"port": "8086",
-        "table": "MYDB"
+        "table": "mydb"
 	},
 
 	"unisphere": 
