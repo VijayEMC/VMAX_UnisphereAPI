@@ -22,7 +22,7 @@ class uniInfo:
     idb = {}
 
 ##########################################
-# Method: Create/Connect InfluxDB Instance
+# Method: Connect InfluxDB Instance
 ##########################################
 
 def ccInflux(sysInfo, configObj):
