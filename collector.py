@@ -11,7 +11,7 @@ configObj = importConfig()
 uniInst = uniInfo(configObj)
 
 # Connect to Influx instance
-uniInst.idb = ccInflux(configObj['influx']['ip'], configObj['influx']['port'], configObj['influx']['user'], configObj['influx']['pass'], configObj['influx']['table'] )
+ccInflux(uniInst, configObj)
 
 # Get keys
 keys = getKeys(uniInst)

@@ -21,33 +21,12 @@ class uniInfo:
     headers = {}
     idb = {}
 
-#########################
-# Auth: Create Auth
-#########################
-
-def getAuth(username, password, symInfo):
-    symInfo['auth'] = requests.auth.HTTPBasicAuth(user, password)
-
-#########################
-# Method: API Post Method
-#########################
-
-def restPost(body, api_url, headers, auth):
-    return requests.post(api_url, json.dumps(body), headers=headers, verify=False)
-
-#########################
-# Method: API Get Method
-#########################
-
-def restGet(api_url, headers, auth):
-    return requests.get(api_url, headers=headers, verify=False)
-
 ##########################################
 # Method: Create/Connect InfluxDB Instance
 ##########################################
 
-def ccInflux(host, port, user, password, dbname):
-    return InfluxDBClient(host, port, user, password, dbname)
+def ccInflux(sysInfo, configObj):
+    sysInfo.idb = InfluxDBClient((configObj['influx']['ip'], configObj['influx']['port'], configObj['influx']['user'], configObj['influx']['pass'], configObj['influx']['table']))
     
 ##############################################
 # Method: Get Keys
