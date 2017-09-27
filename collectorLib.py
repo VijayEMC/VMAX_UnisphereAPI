@@ -44,7 +44,7 @@ def ccInflux(sysInfo, configObj):
 ##########################################################
 
 def influxTimeQuery(idbInstance):
-    lastWriteObj = idbInstance.query('select value from cpu_load_short ORDER BY time DESC LIMIT 1;')
+    lastWriteObj = idbInstance.query('select * from mydb ORDER BY time DESC LIMIT 1;') # need to change the query to 
     return lastWriteObj['time']
 
 def _timeDiff(timestamp, influxLastTime):
@@ -126,6 +126,6 @@ def _clearInfluxArray(symInfo):
 # Post Cond: return json formatted content from file
 #####################################################################
 def importConfig():
-    f = open("settings.json.example", "r")
+    f = open("settings.json", "r")
     return json.loads(f.read())
 
