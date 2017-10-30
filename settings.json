@@ -11,21 +11,8 @@
 	},
 
 	"unisphere": 
-    [
-    
 		{
-			"ip": "<IP>",
-			"user": "<username>",
-			"password": "<password>!",
-			"port": "8443",
-			"version": 8,
-			"symmetrix": [
-				{ "sid": "<symID>" },
-				{ "sid": "<symID>" },
-				{ "sid": "<symID>"}
-			]
-		},
-        {
+
 			"ip": "<IP>",
 			"user": "<username>",
 			"password": "<password>!",
@@ -37,7 +24,7 @@
 				{ "sid": "<symID>"}
 			]
 		}
-	],
+	,
     
     "metrics" : [
         "MB_READ_PER_SEC",
